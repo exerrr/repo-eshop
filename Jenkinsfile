@@ -1,51 +1,47 @@
 pipeline {
     agent any
 
-    environment {
-        DOTNET_HOME = "/c/Users/yourusername/.dotnet/tools"
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/exerrr/repo-eshop.git'
+                checkout scm
             }
         }
 
         stage('Verify Dotnet SDK') {
             steps {
-                sh "${DOTNET_HOME}/dotnet --version"
+                dotnetVersion()
             }
         }
 
         stage('Restore') {
             steps {
-                sh "${DOTNET_HOME}/dotnet restore src/eShop.AppHost/eShop.AppHost.csproj"
+                script {
+                    sh 'dotnet restore src/eShop.AppHost/eShop.AppHost.csproj'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                sh "${DOTNET_HOME}/dotnet build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release"
+                script {
+                    sh 'dotnet build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release'
+                }
             }
         }
 
         stage('Run') {
             steps {
-                sh "${DOTNET_HOME}/dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj"
+                script {
+                    sh 'dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj'
+                }
             }
         }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: '**/bin/**/*', allowEmptyArchive: true
-        }
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
+            archiveArtifacts artifacts: '**/bin/Release/*.dll', allowEmptyArchive: true
         }
     }
 }
