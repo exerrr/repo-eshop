@@ -10,7 +10,10 @@ pipeline {
 
         stage('Verify Dotnet SDK') {
             steps {
-                dotnetVersion()
+                script {
+                    def dotnet = dotnetVersion()
+                    echo "Dotnet SDK version: ${dotnet}"
+                }
             }
         }
 
