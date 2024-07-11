@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        PATH = "C:\\Users\\yourusername\\.dotnet\\tools;" + env.PATH
+        DOTNET_ROOT = "/usr/share/dotnet"
+        PATH = "${env.DOTNET_ROOT}:${env.PATH}"
     }
 
     stages {
@@ -12,27 +13,21 @@ pipeline {
             }
         }
 
-        stage('Verify Dotnet SDK') {
-            steps {
-                bat 'dotnet --version' // Verifica que el SDK de .NET esté disponible
-            }
-        }
-
         stage('Restore') {
             steps {
-                bat 'dotnet restore src/eShop.AppHost/eShop.AppHost.csproj'
+                sh 'dotnet restore src/eShop.AppHost/eShop.AppHost.csproj'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release'
+                sh 'dotnet build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release'
             }
         }
 
         stage('Run') {
             steps {
-                bat 'dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj'
+                sh 'dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj'
             }
         }
     }
