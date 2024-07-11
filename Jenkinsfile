@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        DOTNET_HOME = "/c/Users/yourusername/.dotnet/tools"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -10,25 +14,25 @@ pipeline {
 
         stage('Verify Dotnet SDK') {
             steps {
-                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" --version' // Reemplaza yourusername con tu nombre de usuario real
+                sh "${DOTNET_HOME}/dotnet --version"
             }
         }
 
         stage('Restore') {
             steps {
-                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" restore src/eShop.AppHost/eShop.AppHost.csproj'
+                sh "${DOTNET_HOME}/dotnet restore src/eShop.AppHost/eShop.AppHost.csproj"
             }
         }
 
         stage('Build') {
             steps {
-                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release'
+                sh "${DOTNET_HOME}/dotnet build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release"
             }
         }
 
         stage('Run') {
             steps {
-                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" run --project src/eShop.AppHost/eShop.AppHost.csproj'
+                sh "${DOTNET_HOME}/dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj"
             }
         }
     }
