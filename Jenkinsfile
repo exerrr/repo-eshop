@@ -8,14 +8,14 @@ pipeline {
             }
         }
 
-        stage('Verify Dotnet SDK') {
+        /* stage('Verify Dotnet SDK') {
             steps {
                 script {
                     def dotnet = dotnetVersion()
                     echo "Dotnet SDK version: ${dotnet}"
                 }
             }
-        }
+        } */
 
         stage('Restore') {
             steps {
