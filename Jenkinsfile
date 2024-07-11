@@ -1,15 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/dotnet/sdk:6.0'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
-
-    environment {
-        DOTNET_ROOT = "/usr/share/dotnet"
-        PATH = "${env.DOTNET_ROOT}:${env.PATH}"
-    }
+    agent any
 
     stages {
         stage('Checkout') {
