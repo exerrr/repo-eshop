@@ -1,5 +1,5 @@
 pipeline {
-   agent {
+    agent {
         docker {
             image 'mcr.microsoft.com/dotnet/sdk:6.0'
             args '-v /var/run/docker.sock:/var/run/docker.sock'
@@ -15,6 +15,12 @@ pipeline {
         stage('Checkout') {
             steps {
                 git 'https://github.com/exerrr/repo-eshop.git'
+            }
+        }
+
+        stage('Verify Dotnet SDK') {
+            steps {
+                sh 'dotnet --version' // Verifica que el SDK de .NET esté disponible
             }
         }
 
