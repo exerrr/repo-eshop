@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        DOTNET_ROOT = "/usr/share/dotnet"
-        PATH = "${env.DOTNET_ROOT}:${env.PATH}"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -13,21 +8,27 @@ pipeline {
             }
         }
 
+        stage('Verify Dotnet SDK') {
+            steps {
+                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" --version' // Reemplaza yourusername con tu nombre de usuario real
+            }
+        }
+
         stage('Restore') {
             steps {
-                sh 'dotnet restore src/eShop.AppHost/eShop.AppHost.csproj'
+                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" restore src/eShop.AppHost/eShop.AppHost.csproj'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'dotnet build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release'
+                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" build src/eShop.AppHost/eShop.AppHost.csproj --configuration Release'
             }
         }
 
         stage('Run') {
             steps {
-                sh 'dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj'
+                sh '"/c/Users/yourusername/.dotnet/tools/dotnet" run --project src/eShop.AppHost/eShop.AppHost.csproj'
             }
         }
     }
